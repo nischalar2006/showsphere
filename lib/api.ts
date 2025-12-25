@@ -77,8 +77,22 @@ export const moviesApi = {
         return data ?? [];
     },
 
+    // ✅ PUBLIC READ (Detail page)
+    getById: async (id: string) => {
+        const { data, error } = await supabaseBrowser
+            .from("movies")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+        if (error) {
+            console.error("Supabase movie details fetch error:", error);
+            throw new Error("Failed to fetch movie details");
+        }
+        return data;
+    },
+
     // 🔒 Backend-protected routes (admin only)
-    getById: (id: string) => apiCall(`/movies/${id}`),
     create: (data: any) =>
         apiCall("/movies", {
             method: "POST",

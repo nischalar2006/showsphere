@@ -12989,3 +12989,4 @@ Import map: aliased to relative './components/ai-chatbot' inside of [project]/
 https://nextjs.org/docs/messages/module-not-found
 [07:17:55.949] Server  LOG      ✓ Compiled in 246ms
 [10:06:09.183] Server  LOG      ✓ Compiled in 2.2s
+[10:25:01.560] Server  LOG      ✓ Compiled in 127ms

@@ -1,13 +1,27 @@
 // ==============================
-// API Base URL (Backend APIs)
+// Backend API URL (SERVER / ADMIN ONLY)
 // ==============================
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+// ❌ NO localhost fallback (CRITICAL)
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// ==============================
+// Backend safety guard
+// Prevent browser from hitting backend APIs
+// ==============================
+function ensureBackendAvailable() {
+  if (typeof window !== "undefined" && !API_URL) {
+    throw new Error(
+      "Backend API is not available in browser (production-safe guard)"
+    );
+  }
+}
 
 // ==============================
 // Helper function for backend API calls
 // ==============================
 async function apiCall(endpoint: string, options: RequestInit = {}) {
+  ensureBackendAvailable();
+
   const token =
     typeof window !== "undefined"
       ? localStorage.getItem("access_token")
@@ -48,7 +62,7 @@ const supabaseBrowser = createClient(
 // Movies API
 // ==============================
 export const moviesApi = {
-  // ✅ PUBLIC READ (browser-safe, mobile-safe)
+  // ✅ PUBLIC READ (browser + mobile safe)
   getAll: async () => {
     const { data, error } = await supabaseBrowser
       .from("movies")
@@ -63,10 +77,13 @@ export const moviesApi = {
     return data ?? [];
   },
 
-  // 🔒 Backend-protected routes (admin / auth required)
+  // 🔒 Backend-protected routes (admin only)
   getById: (id: string) => apiCall(`/movies/${id}`),
   create: (data: any) =>
-    apiCall("/movies", { method: "POST", body: JSON.stringify(data) }),
+    apiCall("/movies", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
   update: (id: string, data: any) =>
     apiCall(`/movies/${id}`, {
       method: "PUT",
@@ -77,7 +94,7 @@ export const moviesApi = {
 };
 
 // ==============================
-// Theaters API
+// Theaters API (Backend only)
 // ==============================
 export const theatersApi = {
   getAll: () => apiCall("/theaters"),
@@ -85,7 +102,7 @@ export const theatersApi = {
 };
 
 // ==============================
-// Shows API
+// Shows API (Backend only)
 // ==============================
 export const showsApi = {
   getAll: (params?: { movie_id?: string; theater_id?: string }) => {
@@ -94,11 +111,14 @@ export const showsApi = {
   },
   getById: (id: string) => apiCall(`/shows/${id}`),
   create: (data: any) =>
-    apiCall("/shows", { method: "POST", body: JSON.stringify(data) }),
+    apiCall("/shows", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
 };
 
 // ==============================
-// Bookings API
+// Bookings API (Backend only)
 // ==============================
 export const bookingsApi = {
   create: (data: {
@@ -116,7 +136,7 @@ export const bookingsApi = {
 };
 
 // ==============================
-// Auth API
+// Auth API (Backend only)
 // ==============================
 export const authApi = {
   signUp: (data: {

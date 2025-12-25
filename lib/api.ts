@@ -24,9 +24,22 @@ async function apiCall(endpoint: string, options: RequestInit = {}) {
     return response.json();
 }
 
+import { createClient } from '@/lib/supabase/client';
+
 // Movies API
 export const moviesApi = {
-    getAll: () => apiCall('/movies'),
+    getAll: async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from('movies')
+            .select('*');
+
+        if (error) {
+            console.error('Supabase fetch error:', error);
+            throw new Error(error.message);
+        }
+        return data || [];
+    },
     getById: (id: string) => apiCall(`/movies/${id}`),
     create: (data: any) => apiCall('/movies', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: any) => apiCall(`/movies/${id}`, { method: 'PUT', body: JSON.stringify(data) }),

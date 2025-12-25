@@ -94,45 +94,112 @@ export const moviesApi = {
 };
 
 // ==============================
-// Theaters API (Backend only)
+// Theaters API (Direct Supabase)
 // ==============================
 export const theatersApi = {
-    getAll: () => apiCall("/theaters"),
-    getById: (id: string) => apiCall(`/theaters/${id}`),
+    getAll: async () => {
+        const { data, error } = await supabaseBrowser
+            .from("theaters")
+            .select("*");
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    getById: async (id: string) => {
+        const { data, error } = await supabaseBrowser
+            .from("theaters")
+            .select("*")
+            .eq("id", id)
+            .single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
 };
 
 // ==============================
-// Shows API (Backend only)
+// Shows API (Direct Supabase)
 // ==============================
 export const showsApi = {
-    getAll: (params?: { movie_id?: string; theater_id?: string }) => {
-        const query = new URLSearchParams(params as any).toString();
-        return apiCall(`/shows${query ? `?${query}` : ""}`);
+    getAll: async (params?: { movie_id?: string; theater_id?: string }) => {
+        let query = supabaseBrowser
+            .from("shows")
+            .select("*, movies(*), theaters(*)");
+
+        if (params?.movie_id) query = query.eq("movie_id", params.movie_id);
+        if (params?.theater_id) query = query.eq("theater_id", params.theater_id);
+
+        const { data, error } = await query;
+        if (error) throw new Error(error.message);
+        return data;
     },
-    getById: (id: string) => apiCall(`/shows/${id}`),
-    create: (data: any) =>
-        apiCall("/shows", {
-            method: "POST",
-            body: JSON.stringify(data),
-        }),
+    getById: async (id: string) => {
+        const { data, error } = await supabaseBrowser
+            .from("shows")
+            .select("*, movies(*), theaters(*)")
+            .eq("id", id)
+            .single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    create: async (data: any) => {
+        const { data: result, error } = await supabaseBrowser
+            .from("shows")
+            .insert([data])
+            .select()
+            .single();
+        if (error) throw new Error(error.message);
+        return result;
+    },
 };
 
 // ==============================
-// Bookings API (Backend only)
+// Bookings API (Direct Supabase)
 // ==============================
 export const bookingsApi = {
-    create: (data: {
+    create: async (data: {
         show_id: string;
         seat_numbers: string[];
         total_price: number;
-    }) =>
-        apiCall("/bookings", {
-            method: "POST",
-            body: JSON.stringify(data),
-        }),
+    }) => {
+        const { data: { user } } = await supabaseBrowser.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
 
-    getUserBookings: () => apiCall("/bookings"),
-    getById: (id: string) => apiCall(`/bookings/${id}`),
+        const { data: result, error } = await supabaseBrowser
+            .from("bookings")
+            .insert([{
+                ...data,
+                user_id: user.id, // Explicitly set user_id
+                booking_date: new Date().toISOString()
+            }])
+            .select()
+            .single();
+
+        if (error) throw new Error(error.message);
+        return result;
+    },
+
+    getUserBookings: async () => {
+        const { data: { user } } = await supabaseBrowser.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
+
+        const { data, error } = await supabaseBrowser
+            .from("bookings")
+            .select("*, shows(*, movies(*), theaters(*))")
+            .eq("user_id", user.id)
+            .order("booking_date", { ascending: false });
+
+        if (error) throw new Error(error.message);
+        return data;
+    },
+
+    getById: async (id: string) => {
+        const { data, error } = await supabaseBrowser
+            .from("bookings")
+            .select("*, shows(*, movies(*), theaters(*))")
+            .eq("id", id)
+            .single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
 };
 
 // ==============================

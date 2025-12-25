@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(main)/layout,_N_T_/(main)/trailers/layout,_N_T_/(main)/trailers/upcoming/layout,_N_T_/(main)/trailers/upcoming/page,_N_T_/trailers/upcoming"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KG1haW4p/trailers/upcoming/__PAGE__",
+    "/!KG1haW4p/trailers/upcoming",
+    "/!KG1haW4p/trailers",
+    "/!KG1haW4p",
+    "/_index",
+    "/_head"
+  ]
+}

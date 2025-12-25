@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/NISCHAL/Desktop/fullStack_project/frontend/app/%28main%29/layout.tsx"],"sourcesContent":["import type React from \"react\"\r\nimport { AuthProvider } from \"@/context/auth-context\"\r\nimport { CityProvider } from \"@/context/city-context\"\r\nimport { AIChatbot } from \"@/components/ai-chatbot\"\r\nimport { Navigation } from \"@/components/navigation\"\r\nimport { Analytics } from \"@vercel/analytics/next\"\r\n// Fonts and globals are in root layout now, or check where they should be.\r\n// Usually root layout has <html><body>. (main) layout just wraps children.\r\n\r\nexport default function MainLayout({\r\n    children,\r\n}: Readonly<{\r\n    children: React.ReactNode\r\n}>) {\r\n    return (\r\n        <AuthProvider>\r\n            <CityProvider>\r\n                <Navigation />\r\n                {children}\r\n                <AIChatbot />\r\n                <Analytics />\r\n            </CityProvider>\r\n        </AuthProvider>\r\n    )\r\n}\r\n"],"names":[],"mappings":";;;;;AACA;AACA;AACA;AACA;AACA;;;;;;;AAIe,SAAS,WAAW,EAC/B,QAAQ,EAGV;IACE,qBACI,8OAAC,2IAAY;kBACT,cAAA,8OAAC,2IAAY;;8BACT,8OAAC,uIAAU;;;;;gBACV;8BACD,8OAAC,yIAAS;;;;;8BACV,8OAAC,4KAAS;;;;;;;;;;;;;;;;AAI1B"}}]
+}

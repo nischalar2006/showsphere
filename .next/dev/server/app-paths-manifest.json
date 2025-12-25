@@ -1,0 +1,13 @@
+{
+  "/(main)/activities/page": "app/(main)/activities/page.js",
+  "/(main)/booking/page": "app/(main)/booking/page.js",
+  "/(main)/movies/[id]/page": "app/(main)/movies/[id]/page.js",
+  "/(main)/movies/page": "app/(main)/movies/page.js",
+  "/(main)/old-hits/page": "app/(main)/old-hits/page.js",
+  "/(main)/page": "app/(main)/page.js",
+  "/(main)/trailers/upcoming/page": "app/(main)/trailers/upcoming/page.js",
+  "/admin/movies/page": "app/admin/movies/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/shows/page": "app/admin/shows/page.js",
+  "/admin/theaters/page": "app/admin/theaters/page.js"
+}

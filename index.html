@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShowSphere - Movie Ticket Booking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">ShowSphere</div>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('movies')">Movies</a>
+                <a href="#" onclick="showSection('booking')">Bookings</a>
+                <a href="#" class="login-btn">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Book Your Movie Tickets</h1>
+                <p>Experience cinema like never before</p>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" placeholder="Search movies..." id="searchInput" class="search-input">
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+
+        <!-- Featured Movies -->
+        <section class="featured-section">
+            <h2>Featured Movies</h2>
+            <div class="movies-grid">
+                <div class="movie-card" onclick="bookMovie('Thaamma', 'images/thaamma.jpg')">
+                    <img src="https://via.placeholder.com/200x300?text=Thaamma" alt="Thaamma">
+                    <div class="movie-info">
+                        <h3>Thaamma</h3>
+                        <p class="rating">⭐ 8.5/10</p>
+                        <p class="genre">Hindi • 2h 30m</p>
+                        <button class="book-btn">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="movie-card" onclick="bookMovie('Action Movie', 'images/action.jpg')">
+                    <img src="https://via.placeholder.com/200x300?text=Action" alt="Action Movie">
+                    <div class="movie-info">
+                        <h3>Action Movie</h3>
+                        <p class="rating">⭐ 8.2/10</p>
+                        <p class="genre">English • 2h 15m</p>
+                        <button class="book-btn">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="movie-card" onclick="bookMovie('Comedy Night', 'images/comedy.jpg')">
+                    <img src="https://via.placeholder.com/200x300?text=Comedy" alt="Comedy">
+                    <div class="movie-info">
+                        <h3>Comedy Night</h3>
+                        <p class="rating">⭐ 7.9/10</p>
+                        <p class="genre">Hindi • 1h 50m</p>
+                        <button class="book-btn">Book Now</button>
+                    </div>
+                </div>
+
+                <div class="movie-card" onclick="bookMovie('Romance', 'images/romance.jpg')">
+                    <img src="https://via.placeholder.com/200x300?text=Romance" alt="Romance">
+                    <div class="movie-info">
+                        <h3>Romance</h3>
+                        <p class="rating">⭐ 8.1/10</p>
+                        <p class="genre">English • 2h 5m</p>
+                        <button class="book-btn">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Events -->
+        <section class="events-section">
+            <h2>Happening This Week</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200?text=Adventure+Park" alt="Adventure Park">
+                    <h3>E-O-D Adventure Park</h3>
+                    <p>Daily, 9:00 AM onwards</p>
+                    <span class="price">₹399 onwards</span>
+                </div>
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200?text=Go+Kart" alt="Go Kart">
+                    <h3>Turbo Track Go Karting</h3>
+                    <p>Daily, Multiple slots</p>
+                    <span class="price">₹699 onwards</span>
+                </div>
+                <div class="event-card">
+                    <img src="https://via.placeholder.com/300x200?text=Museum" alt="Museum">
+                    <h3>Museum of Illusions</h3>
+                    <p>Daily, Multiple slots</p>
+                    <span class="price">₹649 onwards</span>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Movies Browse Section -->
+    <section id="movies" class="section">
+        <div class="browse-container">
+            <aside class="filters-sidebar">
+                <h3>Filters</h3>
+                
+                <div class="filter-group">
+                    <h4>Genre</h4>
+                    <label><input type="checkbox"> Action</label>
+                    <label><input type="checkbox"> Comedy</label>
+                    <label><input type="checkbox"> Romance</label>
+                    <label><input type="checkbox"> Horror</label>
+                    <label><input type="checkbox"> Drama</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Rating</h4>
+                    <label><input type="checkbox"> 9+ Rating</label>
+                    <label><input type="checkbox"> 8+ Rating</label>
+                    <label><input type="checkbox"> 7+ Rating</label>
+                </div>
+
+                <div class="filter-group">
+                    <h4>Language</h4>
+                    <label><input type="checkbox"> Hindi</label>
+                    <label><input type="checkbox"> English</label>
+                    <label><input type="checkbox"> Tamil</label>
+                </div>
+
+                <button class="clear-filters-btn">Clear All Filters</button>
+            </aside>
+
+            <main class="movies-browse">
+                <div class="sort-controls">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect">
+                        <option>Popularity</option>
+                        <option>Latest</option>
+                        <option>Rating (High to Low)</option>
+                        <option>Price (Low to High)</option>
+                    </select>
+                </div>
+
+                <div class="movies-browse-grid">
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Thaamma" alt="Thaamma">
+                        <h3>Thaamma</h3>
+                        <p class="rating">⭐ 8.5/10</p>
+                        <p class="genre">Hindi, Action • 2h 30m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Drama" alt="Drama">
+                        <h3>Drama Movie</h3>
+                        <p class="rating">⭐ 8.3/10</p>
+                        <p class="genre">English, Drama • 2h 20m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Thriller" alt="Thriller">
+                        <h3>Thriller</h3>
+                        <p class="rating">⭐ 8.7/10</p>
+                        <p class="genre">Hindi, Thriller • 2h 40m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Comedy" alt="Comedy">
+                        <h3>Laugh Out Loud</h3>
+                        <p class="rating">⭐ 7.8/10</p>
+                        <p class="genre">Hindi, Comedy • 1h 50m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Fantasy" alt="Fantasy">
+                        <h3>Fantasy World</h3>
+                        <p class="rating">⭐ 8.4/10</p>
+                        <p class="genre">English, Fantasy • 2h 35m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+
+                    <div class="movie-card-large">
+                        <img src="https://via.placeholder.com/250x350?text=Sci-Fi" alt="Sci-Fi">
+                        <h3>Sci-Fi Adventure</h3>
+                        <p class="rating">⭐ 8.6/10</p>
+                        <p class="genre">English, Sci-Fi • 2h 45m</p>
+                        <button class="book-btn">Book</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="section">
+        <div class="booking-container">
+            <!-- Step 1: Date & Time Selection -->
+            <div id="step1" class="booking-step active">
+                <h2>Select Date & Time</h2>
+                
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="month-nav">&lt;</button>
+                        <h3 id="monthYear">November 2025</h3>
+                        <button id="nextMonth" class="month-nav">&gt;</button>
+                    </div>
+                    
+                    <div class="calendar">
+                        <div class="day-header">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <div id="calendarDays" class="calendar-days"></div>
+                    </div>
+                </div>
+
+                <div class="time-slots">
+                    <h3>Available Times</h3>
+                    <div id="timeSlots" class="time-grid">
+                        <button class="time-slot" data-time="9:00 AM">9:00 AM</button>
+                        <button class="time-slot" data-time="12:00 PM">12:00 PM</button>
+                        <button class="time-slot" data-time="3:00 PM">3:00 PM</button>
+                        <button class="time-slot" data-time="6:00 PM">6:00 PM</button>
+                        <button class="time-slot" data-time="9:00 PM">9:00 PM</button>
+                        <button class="time-slot" data-time="11:00 PM">11:00 PM</button>
+                    </div>
+                </div>
+
+                <button class="next-btn" onclick="nextStep()">Select Cinema</button>
+            </div>
+
+            <!-- Step 2: Cinema Selection -->
+            <div id="step2" class="booking-step">
+                <h2>Select Cinema</h2>
+                
+                <div class="cinema-list">
+                    <div class="cinema-item" onclick="selectCinema(this)">
+                        <div class="cinema-name">INOX World Mark, Sector 65, Gurugram</div>
+                        <div class="cinema-distance">4.4 km away • Allows cancellation</div>
+                        <div class="cinema-show">10:40 PM - LASER</div>
+                    </div>
+
+                    <div class="cinema-item" onclick="selectCinema(this)">
+                        <div class="cinema-name">Wave Cinemas, Gurugram</div>
+                        <div class="cinema-distance">5.3 km away • Allows cancellation</div>
+                        <div class="cinema-show">7:25 PM - 4DX</div>
+                    </div>
+
+                    <div class="cinema-item" onclick="selectCinema(this)">
+                        <div class="cinema-name">Cinepolis Premium, Delhi</div>
+                        <div class="cinema-distance">3.2 km away • Allows cancellation</div>
+                        <div class="cinema-show">8:15 PM - IMAX</div>
+                    </div>
+                </div>
+
+                <div class="step-nav">
+                    <button class="back-btn" onclick="prevStep()">Back</button>
+                    <button class="next-btn" onclick="nextStep()">Select Seats</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Seat Selection -->
+            <div id="step3" class="booking-step">
+                <h2>Select Your Seats</h2>
+                
+                <div class="seat-container">
+                    <div class="screen">SCREEN</div>
+                    
+                    <div class="seating-area">
+                        <!-- Seating rows -->
+                        <div class="seat-row">
+                            <span class="row-label">A</span>
+                            <div class="row-seats">
+                                <button class="seat" data-seat="A1" data-price="400" onclick="selectSeat(event)">1</button>
+                                <button class="seat" data-seat="A2" data-price="400" onclick="selectSeat(event)">2</button>
+                                <button class="seat" data-seat="A3" data-price="400" onclick="selectSeat(event)">3</button>
+                                <button class="seat" data-seat="A4" data-price="400" onclick="selectSeat(event)">4</button>
+                                <button class="seat" data-seat="A5" data-price="400" onclick="selectSeat(event)">5</button>
+                                <div class="seat-spacer"></div>
+                                <button class="seat" data-seat="A6" data-price="400" onclick="selectSeat(event)">6</button>
+                                <button class="seat" data-seat="A7" data-price="400" onclick="selectSeat(event)">7</button>
+                                <button class="seat" data-seat="A8" data-price="400" onclick="selectSeat(event)">8</button>
+                                <button class="seat" data-seat="A9" data-price="400" onclick="selectSeat(event)">9</button>
+                                <button class="seat" data-seat="A10" data-price="400" onclick="selectSeat(event)">10</button>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <span class="row-label">B</span>
+                            <div class="row-seats">
+                                <button class="seat" data-seat="B1" data-price="400" onclick="selectSeat(event)">1</button>
+                                <button class="seat" data-seat="B2" data-price="400" onclick="selectSeat(event)">2</button>
+                                <button class="seat sold" disabled>X</button>
+                                <button class="seat sold" disabled>X</button>
+                                <button class="seat" data-seat="B5" data-price="400" onclick="selectSeat(event)">5</button>
+                                <div class="seat-spacer"></div>
+                                <button class="seat" data-seat="B6" data-price="620" onclick="selectSeat(event)">6</button>
+                                <button class="seat" data-seat="B7" data-price="620" onclick="selectSeat(event)">7</button>
+                                <button class="seat" data-seat="B8" data-price="620" onclick="selectSeat(event)">8</button>
+                                <button class="seat" data-seat="B9" data-price="620" onclick="selectSeat(event)">9</button>
+                                <button class="seat" data-seat="B10" data-price="620" onclick="selectSeat(event)">10</button>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <span class="row-label">C</span>
+                            <div class="row-seats">
+                                <button class="seat" data-seat="C1" data-price="620" onclick="selectSeat(event)">1</button>
+                                <button class="seat" data-seat="C2" data-price="620" onclick="selectSeat(event)">2</button>
+                                <button class="seat" data-seat="C3" data-price="620" onclick="selectSeat(event)">3</button>
+                                <button class="seat" data-seat="C4" data-price="620" onclick="selectSeat(event)">4</button>
+                                <button class="seat" data-seat="C5" data-price="620" onclick="selectSeat(event)">5</button>
+                                <div class="seat-spacer"></div>
+                                <button class="seat" data-seat="C6" data-price="620" onclick="selectSeat(event)">6</button>
+                                <button class="seat sold" disabled>X</button>
+                                <button class="seat sold" disabled>X</button>
+                                <button class="seat sold" disabled>X</button>
+                                <button class="seat" data-seat="C10" data-price="620" onclick="selectSeat(event)">10</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="seat-legend">
+                        <div><span class="legend-seat"></span> Available</div>
+                        <div><span class="legend-seat selected"></span> Selected</div>
+                        <div><span class="legend-seat sold"></span> Sold</div>
+                    </div>
+                </div>
+
+                <div class="step-nav">
+                    <button class="back-btn" onclick="prevStep()">Back</button>
+                    <button class="next-btn" onclick="nextStep()">Review Order</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Checkout -->
+            <div id="step4" class="booking-step">
+                <h2>Booking Summary</h2>
+                
+                <div class="checkout-container">
+                    <div class="order-details">
+                        <h3>Order Summary</h3>
+                        
+                        <div class="detail-item">
+                            <span>Movie:</span>
+                            <span id="summaryMovie">Thaamma</span>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <span>Cinema:</span>
+                            <span id="summaryCinema">INOX World Mark</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Date & Time:</span>
+                            <span id="summaryDateTime">9 Nov, 10:00 PM</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span>Seats:</span>
+                            <span id="summarySeats">A1, A2</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="price-breakdown">
+                            <div class="price-item">
+                                <span>Ticket Price:</span>
+                                <span id="ticketPrice">₹800</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Convenience Fee:</span>
+                                <span>₹50</span>
+                            </div>
+                            <div class="price-item">
+                                <span>GST (5%):</span>
+                                <span id="gstAmount">₹42.50</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="total-price">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">₹892.50</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h3>Payment Method</h3>
+                        
+                        <label class="payment-option">
+                            <input type="radio" name="payment" checked>
+                            <span>Credit Card</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment">
+                            <span>Debit Card</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment">
+                            <span>Net Banking</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment">
+                            <span>UPI</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="step-nav">
+                    <button class="back-btn" onclick="prevStep()">Back</button>
+                    <button class="complete-btn" onclick="completeBooking()">Complete Booking</button>
+                </div>
+            </div>
+
+            <!-- Booking Sidebar -->
+            <aside class="booking-sidebar">
+                <h3>Booking Details</h3>
+                <div class="sidebar-content">
+                    <p><strong>Movie:</strong> <span id="sidebarMovie">Thaamma</span></p>
+                    <p><strong>Date:</strong> <span id="sidebarDate">Select Date</span></p>
+                    <p><strong>Time:</strong> <span id="sidebarTime">Select Time</span></p>
+                    <p><strong>Cinema:</strong> <span id="sidebarCinema">Select Cinema</span></p>
+                    <p><strong>Seats:</strong> <span id="sidebarSeats">Select Seats</span></p>
+                    <hr>
+                    <p class="total"><strong>Total:</strong> ₹<span id="sidebarTotal">0</span></p>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About ShowSphere</h4>
+                <p>Your ultimate movie booking platform</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@showsphere.com</p>
+                <p>Phone: +91-XXX-XXX-XXXX</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ShowSphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

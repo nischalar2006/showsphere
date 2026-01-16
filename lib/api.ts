@@ -192,17 +192,42 @@ export const bookingsApi = {
     },
 
     getUserBookings: async () => {
+        let bookings: any[] = [];
+
+        // 1. Get Guest Bookings from LocalStorage
+        if (typeof window !== 'undefined') {
+            const local = localStorage.getItem('guest_bookings');
+            if (local) {
+                try {
+                    bookings = JSON.parse(local);
+                } catch (e) {
+                    console.error("Failed to parse guest bookings", e);
+                }
+            }
+        }
+
+        // 2. Get DB Bookings if User is Authenticated
         const { data: { user } } = await supabaseBrowser.auth.getUser();
-        if (!user) throw new Error("User not authenticated");
 
-        const { data, error } = await supabaseBrowser
-            .from("bookings")
-            .select("*, shows(*, movies(*), theaters(*))")
-            .eq("user_id", user.id)
-            .order("booking_date", { ascending: false });
+        if (user) {
+            const { data, error } = await supabaseBrowser
+                .from("bookings")
+                .select("*, shows(*, movies(*), theaters(*))")
+                .eq("user_id", user.id)
+                .order("booking_date", { ascending: false });
 
-        if (error) throw new Error(error.message);
-        return data;
+            if (!error && data) {
+                // Merge DB bookings with Local bookings
+                bookings = [...bookings, ...data];
+            }
+        }
+
+        // 3. Sort merged list by date (descending)
+        return bookings.sort((a, b) => {
+            const dateA = new Date(a.booking_date || a.created_at).getTime();
+            const dateB = new Date(b.booking_date || b.created_at).getTime();
+            return dateB - dateA;
+        });
     },
 
     getById: async (id: string) => {

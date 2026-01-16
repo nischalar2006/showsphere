@@ -442,7 +442,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function MoviesPage() {
+function MoviesContent() {
     _s();
     const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"])();
     const [movies, setMovies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
@@ -454,19 +454,19 @@ function MoviesPage() {
     const [sortBy, setSortBy] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('rating');
     const [showFilters, setShowFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "MoviesPage.useEffect": ()=>{
+        "MoviesContent.useEffect": ()=>{
             fetchMovies();
         }
-    }["MoviesPage.useEffect"], []);
+    }["MoviesContent.useEffect"], []);
     // Handle search query from URL
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "MoviesPage.useEffect": ()=>{
+        "MoviesContent.useEffect": ()=>{
             const query = searchParams.get('search');
             if (query) {
             // Search is handled by filteredAndSortedMovies
             }
         }
-    }["MoviesPage.useEffect"], [
+    }["MoviesContent.useEffect"], [
         searchParams
     ]);
     const fetchMovies = async ()=>{
@@ -481,36 +481,36 @@ function MoviesPage() {
     };
     // Extract unique genres and languages
     const allGenres = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "MoviesPage.useMemo[allGenres]": ()=>{
+        "MoviesContent.useMemo[allGenres]": ()=>{
             const genres = new Set();
             movies.forEach({
-                "MoviesPage.useMemo[allGenres]": (movie)=>{
+                "MoviesContent.useMemo[allGenres]": (movie)=>{
                     movie.genre?.forEach({
-                        "MoviesPage.useMemo[allGenres]": (g)=>genres.add(g)
-                    }["MoviesPage.useMemo[allGenres]"]);
+                        "MoviesContent.useMemo[allGenres]": (g)=>genres.add(g)
+                    }["MoviesContent.useMemo[allGenres]"]);
                 }
-            }["MoviesPage.useMemo[allGenres]"]);
+            }["MoviesContent.useMemo[allGenres]"]);
             return Array.from(genres).sort();
         }
-    }["MoviesPage.useMemo[allGenres]"], [
+    }["MoviesContent.useMemo[allGenres]"], [
         movies
     ]);
     const allLanguages = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "MoviesPage.useMemo[allLanguages]": ()=>{
+        "MoviesContent.useMemo[allLanguages]": ()=>{
             const languages = new Set();
             movies.forEach({
-                "MoviesPage.useMemo[allLanguages]": (movie)=>{
+                "MoviesContent.useMemo[allLanguages]": (movie)=>{
                     if (movie.language) languages.add(movie.language);
                 }
-            }["MoviesPage.useMemo[allLanguages]"]);
+            }["MoviesContent.useMemo[allLanguages]"]);
             return Array.from(languages).sort();
         }
-    }["MoviesPage.useMemo[allLanguages]"], [
+    }["MoviesContent.useMemo[allLanguages]"], [
         movies
     ]);
     // Filter and sort movies
     const filteredAndSortedMovies = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "MoviesPage.useMemo[filteredAndSortedMovies]": ()=>{
+        "MoviesContent.useMemo[filteredAndSortedMovies]": ()=>{
             let filtered = [
                 ...movies
             ];
@@ -519,28 +519,28 @@ function MoviesPage() {
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 filtered = filtered.filter({
-                    "MoviesPage.useMemo[filteredAndSortedMovies]": (movie)=>movie.title.toLowerCase().includes(query) || movie.description?.toLowerCase().includes(query) || movie.genre?.some({
-                            "MoviesPage.useMemo[filteredAndSortedMovies]": (g)=>g.toLowerCase().includes(query)
-                        }["MoviesPage.useMemo[filteredAndSortedMovies]"])
-                }["MoviesPage.useMemo[filteredAndSortedMovies]"]);
+                    "MoviesContent.useMemo[filteredAndSortedMovies]": (movie)=>movie.title.toLowerCase().includes(query) || movie.description?.toLowerCase().includes(query) || movie.genre?.some({
+                            "MoviesContent.useMemo[filteredAndSortedMovies]": (g)=>g.toLowerCase().includes(query)
+                        }["MoviesContent.useMemo[filteredAndSortedMovies]"])
+                }["MoviesContent.useMemo[filteredAndSortedMovies]"]);
             }
             // Genre filter
             if (selectedGenres.length > 0) {
                 filtered = filtered.filter({
-                    "MoviesPage.useMemo[filteredAndSortedMovies]": (movie)=>movie.genre?.some({
-                            "MoviesPage.useMemo[filteredAndSortedMovies]": (g)=>selectedGenres.includes(g)
-                        }["MoviesPage.useMemo[filteredAndSortedMovies]"])
-                }["MoviesPage.useMemo[filteredAndSortedMovies]"]);
+                    "MoviesContent.useMemo[filteredAndSortedMovies]": (movie)=>movie.genre?.some({
+                            "MoviesContent.useMemo[filteredAndSortedMovies]": (g)=>selectedGenres.includes(g)
+                        }["MoviesContent.useMemo[filteredAndSortedMovies]"])
+                }["MoviesContent.useMemo[filteredAndSortedMovies]"]);
             }
             // Language filter
             if (selectedLanguages.length > 0) {
                 filtered = filtered.filter({
-                    "MoviesPage.useMemo[filteredAndSortedMovies]": (movie)=>selectedLanguages.includes(movie.language)
-                }["MoviesPage.useMemo[filteredAndSortedMovies]"]);
+                    "MoviesContent.useMemo[filteredAndSortedMovies]": (movie)=>selectedLanguages.includes(movie.language)
+                }["MoviesContent.useMemo[filteredAndSortedMovies]"]);
             }
             // Sort
             filtered.sort({
-                "MoviesPage.useMemo[filteredAndSortedMovies]": (a, b)=>{
+                "MoviesContent.useMemo[filteredAndSortedMovies]": (a, b)=>{
                     switch(sortBy){
                         case 'rating':
                             return (b.rating || 0) - (a.rating || 0);
@@ -552,10 +552,10 @@ function MoviesPage() {
                             return 0;
                     }
                 }
-            }["MoviesPage.useMemo[filteredAndSortedMovies]"]);
+            }["MoviesContent.useMemo[filteredAndSortedMovies]"]);
             return filtered;
         }
-    }["MoviesPage.useMemo[filteredAndSortedMovies]"], [
+    }["MoviesContent.useMemo[filteredAndSortedMovies]"], [
         movies,
         selectedGenres,
         selectedLanguages,
@@ -1023,14 +1023,43 @@ function MoviesPage() {
         columnNumber: 5
     }, this);
 }
-_s(MoviesPage, "uQu8aTgLm+abD9Nug+XRQq0POtw=", false, function() {
+_s(MoviesContent, "uQu8aTgLm+abD9Nug+XRQq0POtw=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"]
     ];
 });
-_c = MoviesPage;
-var _c;
-__turbopack_context__.k.register(_c, "MoviesPage");
+_c = MoviesContent;
+function MoviesPage() {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Suspense"], {
+        fallback: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "min-h-screen bg-background flex items-center justify-center",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                className: "w-12 h-12 text-accent animate-spin"
+            }, void 0, false, {
+                fileName: "[project]/app/(main)/movies/page.tsx",
+                lineNumber: 356,
+                columnNumber: 9
+            }, void 0)
+        }, void 0, false, {
+            fileName: "[project]/app/(main)/movies/page.tsx",
+            lineNumber: 355,
+            columnNumber: 7
+        }, void 0),
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MoviesContent, {}, void 0, false, {
+            fileName: "[project]/app/(main)/movies/page.tsx",
+            lineNumber: 359,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/(main)/movies/page.tsx",
+        lineNumber: 354,
+        columnNumber: 5
+    }, this);
+}
+_c1 = MoviesPage;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "MoviesContent");
+__turbopack_context__.k.register(_c1, "MoviesPage");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }

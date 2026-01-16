@@ -8,7 +8,10 @@ module.exports = mod;
 "[project]/lib/api.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-// API Base URL
+// ==============================
+// Backend API URL (SERVER / ADMIN ONLY)
+// ==============================
+// ❌ NO localhost fallback (CRITICAL)
 __turbopack_context__.s([
     "authApi",
     ()=>authApi,
@@ -21,12 +24,27 @@ __turbopack_context__.s([
     "theatersApi",
     ()=>theatersApi
 ]);
-const API_URL = ("TURBOPACK compile-time value", "http://localhost:5000/api") || 'http://localhost:5000/api';
-// Helper function for API calls
+// ==============================
+// Supabase Browser Client (PUBLIC READS ONLY)
+// ==============================
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@supabase/supabase-js/dist/index.mjs [app-ssr] (ecmascript) <locals>");
+const API_URL = ("TURBOPACK compile-time value", "http://localhost:5000/api");
+// ==============================
+// Backend safety guard
+// Prevent browser from hitting backend APIs
+// ==============================
+function ensureBackendAvailable() {
+    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+    ;
+}
+// ==============================
+// Helper function for backend API calls
+// ==============================
 async function apiCall(endpoint, options = {}) {
+    ensureBackendAvailable();
     const token = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : null;
     const headers = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...token && {
             Authorization: `Bearer ${token}`
         },
@@ -38,74 +56,184 @@ async function apiCall(endpoint, options = {}) {
     });
     if (!response.ok) {
         const error = await response.json().catch(()=>({
-                error: 'Request failed'
+                error: "Request failed"
             }));
         throw new Error(error.error || `HTTP ${response.status}`);
     }
     return response.json();
 }
+;
+const supabaseBrowser = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createClient"])(("TURBOPACK compile-time value", "https://ooofytueuzqhxfxnnnhr.supabase.co"), ("TURBOPACK compile-time value", "sb_publishable_HYLbgXAQlkaSUwLpWnlY2w_uePF58DJ"));
 const moviesApi = {
-    getAll: ()=>apiCall('/movies'),
-    getById: (id)=>apiCall(`/movies/${id}`),
-    create: (data)=>apiCall('/movies', {
-            method: 'POST',
+    // ✅ PUBLIC READ (browser + mobile safe)
+    getAll: async ()=>{
+        const { data, error } = await supabaseBrowser.from("movies").select("*").order("rating", {
+            ascending: false
+        });
+        if (error) {
+            console.error("Supabase movies fetch error:", error);
+            throw new Error("Failed to fetch movies");
+        }
+        return data ?? [];
+    },
+    // ✅ PUBLIC READ (Detail page)
+    getById: async (id)=>{
+        const { data, error } = await supabaseBrowser.from("movies").select("*").eq("id", id).single();
+        if (error) {
+            console.error("Supabase movie details fetch error:", error);
+            throw new Error("Failed to fetch movie details");
+        }
+        return data;
+    },
+    // 🔒 Backend-protected routes (admin only)
+    create: (data)=>apiCall("/movies", {
+            method: "POST",
             body: JSON.stringify(data)
         }),
     update: (id, data)=>apiCall(`/movies/${id}`, {
-            method: 'PUT',
+            method: "PUT",
             body: JSON.stringify(data)
         }),
     delete: (id)=>apiCall(`/movies/${id}`, {
-            method: 'DELETE'
+            method: "DELETE"
         })
 };
 const theatersApi = {
-    getAll: ()=>apiCall('/theaters'),
-    getById: (id)=>apiCall(`/theaters/${id}`)
+    getAll: async ()=>{
+        const { data, error } = await supabaseBrowser.from("theaters").select("*");
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    getById: async (id)=>{
+        const { data, error } = await supabaseBrowser.from("theaters").select("*").eq("id", id).single();
+        if (error) throw new Error(error.message);
+        return data;
+    }
 };
 const showsApi = {
-    getAll: (params)=>{
-        const query = new URLSearchParams(params).toString();
-        return apiCall(`/shows${query ? `?${query}` : ''}`);
+    getAll: async (params)=>{
+        let query = supabaseBrowser.from("shows").select("*, movies(*), theaters(*)");
+        if (params?.movie_id) query = query.eq("movie_id", params.movie_id);
+        if (params?.theater_id) query = query.eq("theater_id", params.theater_id);
+        const { data, error } = await query;
+        if (error) throw new Error(error.message);
+        return data;
     },
-    getById: (id)=>apiCall(`/shows/${id}`),
-    create: (data)=>apiCall('/shows', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        })
+    getById: async (id)=>{
+        const { data, error } = await supabaseBrowser.from("shows").select("*, movies(*), theaters(*)").eq("id", id).single();
+        if (error) throw new Error(error.message);
+        return data;
+    },
+    create: async (data)=>{
+        const { data: result, error } = await supabaseBrowser.from("shows").insert([
+            data
+        ]).select().single();
+        if (error) throw new Error(error.message);
+        return result;
+    }
 };
 const bookingsApi = {
-    create: (data)=>apiCall('/bookings', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        }),
-    getUserBookings: ()=>apiCall('/bookings'),
-    getById: (id)=>apiCall(`/bookings/${id}`)
-};
-const authApi = {
-    signUp: (data)=>apiCall('/auth/signup', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        }),
-    signIn: async (data)=>{
-        const result = await apiCall('/auth/signin', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
-        if (result.session?.access_token) {
-            localStorage.setItem('access_token', result.session.access_token);
-            localStorage.setItem('user', JSON.stringify(result.user));
-        }
+    create: async (data)=>{
+        const { data: { user } } = await supabaseBrowser.auth.getUser();
+        if (!user) throw new Error("User not authenticated");
+        const { data: result, error } = await supabaseBrowser.from("bookings").insert([
+            {
+                ...data,
+                user_id: user.id,
+                booking_date: new Date().toISOString()
+            }
+        ]).select().single();
+        if (error) throw new Error(error.message);
         return result;
     },
-    signOut: async ()=>{
-        await apiCall('/auth/signout', {
-            method: 'POST'
+    getUserBookings: async ()=>{
+        let bookings = [];
+        // 1. Get Guest Bookings from LocalStorage
+        if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+        ;
+        // 2. Get DB Bookings if User is Authenticated
+        const { data: { user } } = await supabaseBrowser.auth.getUser();
+        if (user) {
+            const { data, error } = await supabaseBrowser.from("bookings").select("*, shows(*, movies(*), theaters(*))").eq("user_id", user.id).order("booking_date", {
+                ascending: false
+            });
+            if (!error && data) {
+                // Merge DB bookings with Local bookings
+                bookings = [
+                    ...bookings,
+                    ...data
+                ];
+            }
+        }
+        // 3. Sort merged list by date (descending)
+        return bookings.sort((a, b)=>{
+            const dateA = new Date(a.booking_date || a.created_at).getTime();
+            const dateB = new Date(b.booking_date || b.created_at).getTime();
+            return dateB - dateA;
         });
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('user');
     },
-    getProfile: ()=>apiCall('/auth/profile')
+    getById: async (id)=>{
+        const { data, error } = await supabaseBrowser.from("bookings").select("*, shows(*, movies(*), theaters(*))").eq("id", id).single();
+        if (error) throw new Error(error.message);
+        return data;
+    }
+};
+const authApi = {
+    signUp: async (data)=>{
+        // 1. Sign up
+        const { data: authData, error: authError } = await supabaseBrowser.auth.signUp({
+            email: data.email,
+            password: data.password,
+            options: {
+                data: {
+                    full_name: data.full_name,
+                    phone_number: data.phone_number
+                }
+            }
+        });
+        if (authError) throw new Error(authError.message);
+        // 2. Create Profile (Best effort)
+        if (authData.user) {
+            const { error: profileError } = await supabaseBrowser.from("profiles").insert([
+                {
+                    id: authData.user.id,
+                    email: data.email,
+                    full_name: data.full_name,
+                    phone_number: data.phone_number
+                }
+            ]);
+            // Ignore duplicate key error (if trigger exists)
+            if (profileError && profileError.code !== '23505') {
+                console.warn("Profile creation failed:", profileError);
+            }
+        }
+        return authData;
+    },
+    signIn: async (data)=>{
+        const { data: result, error } = await supabaseBrowser.auth.signInWithPassword({
+            email: data.email,
+            password: data.password
+        });
+        if (error) throw new Error(error.message);
+        if (result.session?.access_token) {
+            localStorage.setItem("access_token", result.session.access_token);
+            localStorage.setItem("user", JSON.stringify(result.user));
+        }
+        return result; // Matches structure Expected by UI
+    },
+    signOut: async ()=>{
+        await supabaseBrowser.auth.signOut();
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("user");
+    },
+    getProfile: async ()=>{
+        // Get current user from session
+        const { data: { user } } = await supabaseBrowser.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
+        const { data, error } = await supabaseBrowser.from('profiles').select('*').eq('id', user.id).single();
+        if (error) throw new Error(error.message);
+        return data;
+    }
 };
 }),
 "[project]/context/auth-context.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
